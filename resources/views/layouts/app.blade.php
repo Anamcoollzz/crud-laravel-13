@@ -8,28 +8,39 @@
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
-<body class="min-h-screen bg-linear-to-br from-slate-50 via-white to-cyan-50 text-slate-800 antialiased">
-  <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 lg:px-8">
-    <header class="mb-6 flex flex-col gap-4 rounded-2xl border border-slate-200/70 bg-white/80 p-4 shadow-sm backdrop-blur sm:flex-row sm:items-center sm:justify-between">
-      <div>
-        <p class="text-xs font-semibold uppercase tracking-wider text-cyan-700">Crud Laravel</p>
-        <h1 class="text-xl font-bold text-slate-900">@yield('page_title', 'Manajemen Produk')</h1>
+<body class="min-h-screen bg-slate-100 text-slate-800 antialiased">
+  <div class="flex min-h-screen">
+    <aside class="w-72 bg-slate-900 text-slate-100">
+      <div class="border-b border-slate-800 p-6">
+        <p class="text-xs font-semibold uppercase tracking-[0.2em] text-cyan-300">Admin Panel</p>
+        <h1 class="mt-2 text-lg font-bold">CRUD Produk</h1>
       </div>
-      <div class="flex flex-wrap items-center gap-2">
+
+      <nav class="space-y-1 p-4">
+        <a href="{{ route('dashboard') }}"
+          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('dashboard') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+          Dashboard
+        </a>
         <a href="{{ route('products.index') }}"
-          class="inline-flex items-center justify-center rounded-lg border px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('products.*') ? 'border-cyan-500 bg-cyan-50 text-cyan-700' : 'border-slate-300 bg-white text-slate-700 hover:border-cyan-400 hover:text-cyan-700' }}">
-          Produk
+          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('products.*') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+          Modul Produk
         </a>
         <a href="{{ route('categories.index') }}"
-          class="inline-flex items-center justify-center rounded-lg border px-4 py-2 text-sm font-semibold transition {{ request()->routeIs('categories.*') ? 'border-cyan-500 bg-cyan-50 text-cyan-700' : 'border-slate-300 bg-white text-slate-700 hover:border-cyan-400 hover:text-cyan-700' }}">
-          Kategori
+          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('categories.*') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+          Modul Kategori
         </a>
-      </div>
-    </header>
+      </nav>
+    </aside>
 
-    <main>
-      @yield('content')
-    </main>
+    <div class="flex-1">
+      <header class="border-b border-slate-200 bg-white px-6 py-5 sm:px-10">
+        <h2 class="text-2xl font-bold text-slate-900">@yield('page_title', 'Dashboard Admin')</h2>
+      </header>
+
+      <main class="px-6 py-6 sm:px-10">
+        @yield('content')
+      </main>
+    </div>
   </div>
 </body>
 
