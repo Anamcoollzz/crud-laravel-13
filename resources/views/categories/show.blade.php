@@ -24,7 +24,8 @@
       </div>
 
       <div class="mt-6 flex items-center gap-3">
-        <a href="{{ route('categories.index') }}" class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700">Kembali</a>
+        <a href="{{ route('categories.index') }}"
+          class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700">Kembali</a>
         <a href="{{ route('categories.edit', $category) }}" class="inline-flex items-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600">Edit</a>
       </div>
     </div>
