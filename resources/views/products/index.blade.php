@@ -1,61 +1,65 @@
-<!DOCTYPE html>
-<html lang="id">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Produk</title>
-</head>
-<body style="font-family: Arial, sans-serif; background: #f3f4f6; margin: 0;">
-    <div style="max-width: 960px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.08);">
-        <div style="display:flex; justify-content: space-between; align-items:center; margin-bottom: 16px;">
-            <h1 style="margin:0;">Daftar Produk</h1>
-            <a href="{{ route('products.create') }}" style="background:#111827; color:#fff; padding:10px 14px; border-radius:8px; text-decoration:none;">+ Tambah Produk</a>
+@extends('layouts.app')
+
+@section('title', 'Daftar Produk')
+@section('page_title', 'Daftar Produk')
+
+@section('content')
+    <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <h2 class="text-lg font-semibold text-slate-900">Semua Produk</h2>
+            <a
+                href="{{ route('products.create') }}"
+                class="inline-flex items-center justify-center rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700"
+            >
+                + Tambah Produk
+            </a>
         </div>
 
         @if (session('success'))
-            <div style="background:#dcfce7; color:#166534; border:1px solid #86efac; padding:10px 12px; border-radius:8px; margin-bottom:16px;">
+            <div class="mb-5 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700">
                 {{ session('success') }}
             </div>
         @endif
 
-        <div style="overflow-x:auto;">
-            <table style="width:100%; border-collapse: collapse;">
+        <div class="overflow-x-auto">
+            <table class="min-w-full border-separate border-spacing-0 text-sm">
                 <thead>
-                    <tr style="background:#f9fafb;">
-                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">Nama</th>
-                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">Harga</th>
-                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb;">Stok</th>
-                        <th style="text-align:left; padding:10px; border-bottom:1px solid #e5e7eb; width:240px;">Aksi</th>
+                    <tr>
+                        <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Nama</th>
+                        <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Harga</th>
+                        <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Stok</th>
+                        <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Aksi</th>
                     </tr>
                 </thead>
                 <tbody>
                     @forelse ($products as $product)
-                        <tr>
-                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">{{ $product->name }}</td>
-                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">Rp {{ number_format($product->price, 2, ',', '.') }}</td>
-                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">{{ $product->stock }}</td>
-                            <td style="padding:10px; border-bottom:1px solid #f3f4f6;">
-                                <a href="{{ route('products.show', $product) }}" style="margin-right:8px;">Detail</a>
-                                <a href="{{ route('products.edit', $product) }}" style="margin-right:8px;">Edit</a>
-                                <form action="{{ route('products.destroy', $product) }}" method="POST" style="display:inline;" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" style="background:none; border:none; color:#b91c1c; cursor:pointer; padding:0;">Hapus</button>
-                                </form>
+                        <tr class="hover:bg-slate-50/70">
+                            <td class="border-b border-slate-100 px-4 py-3 font-medium text-slate-900">{{ $product->name }}</td>
+                            <td class="border-b border-slate-100 px-4 py-3">Rp {{ number_format($product->price, 2, ',', '.') }}</td>
+                            <td class="border-b border-slate-100 px-4 py-3">{{ $product->stock }}</td>
+                            <td class="border-b border-slate-100 px-4 py-3">
+                                <div class="flex flex-wrap items-center gap-3">
+                                    <a href="{{ route('products.show', $product) }}" class="font-medium text-cyan-700 hover:text-cyan-800">Detail</a>
+                                    <a href="{{ route('products.edit', $product) }}" class="font-medium text-amber-700 hover:text-amber-800">Edit</a>
+                                    <form action="{{ route('products.destroy', $product) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus produk ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="cursor-pointer font-medium text-rose-700 hover:text-rose-800">Hapus</button>
+                                    </form>
+                                </div>
                             </td>
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="4" style="padding:16px; text-align:center; color:#6b7280;">Belum ada data produk.</td>
+                            <td colspan="4" class="px-4 py-8 text-center text-slate-500">Belum ada data produk.</td>
                         </tr>
                     @endforelse
                 </tbody>
             </table>
         </div>
 
-        <div style="margin-top:16px;">
+        <div class="mt-5">
             {{ $products->links() }}
         </div>
     </div>
-</body>
-</html>
+@endsection

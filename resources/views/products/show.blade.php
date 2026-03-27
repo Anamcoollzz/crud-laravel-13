@@ -1,43 +1,35 @@
-<!DOCTYPE html>
-<html lang="id">
+@extends('layouts.app')
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Detail Produk</title>
-</head>
+@section('title', 'Detail Produk')
+@section('page_title', 'Detail Produk')
 
-<body style="font-family: Arial, sans-serif; background: #f3f4f6; margin: 0;">
-  <div style="max-width: 760px; margin: 40px auto; background: #fff; padding: 24px; border-radius: 12px; box-shadow: 0 8px 24px rgba(0,0,0,.08);">
-    <h1 style="margin-top:0;">Detail Produk</h1>
+@section('content')
+    <div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
+        <div class="grid gap-4 sm:grid-cols-2">
+            <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Nama</p>
+                <p class="mt-1 text-sm font-semibold text-slate-900">{{ $product->name }}</p>
+            </div>
 
-    <div style="display:grid; gap:12px;">
-      <div>
-        <strong>Nama:</strong>
-        <div>{{ $product->name }}</div>
-      </div>
+            <div class="rounded-xl bg-slate-50 p-4">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Harga</p>
+                <p class="mt-1 text-sm font-semibold text-slate-900">Rp {{ number_format($product->price, 2, ',', '.') }}</p>
+            </div>
 
-      <div>
-        <strong>Deskripsi:</strong>
-        <div>{{ $product->description ?: '-' }}</div>
-      </div>
+            <div class="rounded-xl bg-slate-50 p-4 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Deskripsi</p>
+                <p class="mt-1 text-sm text-slate-700">{{ $product->description ?: '-' }}</p>
+            </div>
 
-      <div>
-        <strong>Harga:</strong>
-        <div>Rp {{ number_format($product->price, 2, ',', '.') }}</div>
-      </div>
+            <div class="rounded-xl bg-slate-50 p-4 sm:col-span-2">
+                <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Stok</p>
+                <p class="mt-1 text-sm font-semibold text-slate-900">{{ $product->stock }}</p>
+            </div>
+        </div>
 
-      <div>
-        <strong>Stok:</strong>
-        <div>{{ $product->stock }}</div>
-      </div>
+        <div class="mt-6 flex items-center gap-3">
+            <a href="{{ route('products.index') }}" class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700">Kembali</a>
+            <a href="{{ route('products.edit', $product) }}" class="inline-flex items-center rounded-lg bg-amber-500 px-4 py-2 text-sm font-semibold text-white transition hover:bg-amber-600">Edit</a>
+        </div>
     </div>
-
-    <div style="margin-top: 16px;">
-      <a href="{{ route('products.index') }}" style="margin-right:8px;">Kembali</a>
-      <a href="{{ route('products.edit', $product) }}">Edit</a>
-    </div>
-  </div>
-</body>
-
-</html>
+@endsection

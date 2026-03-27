@@ -1,36 +1,36 @@
 @csrf
 
-<div style="margin-bottom: 12px;">
-    <label for="name" style="display:block; margin-bottom: 6px; font-weight: 600;">Nama Produk</label>
+<div>
+    <label for="name" class="mb-2 block text-sm font-semibold text-slate-700">Nama Produk</label>
     <input
         type="text"
         id="name"
         name="name"
         value="{{ old('name', $product->name ?? '') }}"
         required
-        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;"
+        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
     >
     @error('name')
-        <small style="color: #b91c1c;">{{ $message }}</small>
+        <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p>
     @enderror
 </div>
 
-<div style="margin-bottom: 12px;">
-    <label for="description" style="display:block; margin-bottom: 6px; font-weight: 600;">Deskripsi</label>
+<div>
+    <label for="description" class="mb-2 block text-sm font-semibold text-slate-700">Deskripsi</label>
     <textarea
         id="description"
         name="description"
         rows="4"
-        style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;"
+        class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
     >{{ old('description', $product->description ?? '') }}</textarea>
     @error('description')
-        <small style="color: #b91c1c;">{{ $message }}</small>
+        <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p>
     @enderror
 </div>
 
-<div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin-bottom: 16px;">
+<div class="grid gap-4 sm:grid-cols-2">
     <div>
-        <label for="price" style="display:block; margin-bottom: 6px; font-weight: 600;">Harga</label>
+        <label for="price" class="mb-2 block text-sm font-semibold text-slate-700">Harga</label>
         <input
             type="number"
             step="0.01"
@@ -39,15 +39,15 @@
             name="price"
             value="{{ old('price', $product->price ?? 0) }}"
             required
-            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;"
+            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
         >
         @error('price')
-            <small style="color: #b91c1c;">{{ $message }}</small>
+            <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p>
         @enderror
     </div>
 
     <div>
-        <label for="stock" style="display:block; margin-bottom: 6px; font-weight: 600;">Stok</label>
+        <label for="stock" class="mb-2 block text-sm font-semibold text-slate-700">Stok</label>
         <input
             type="number"
             min="0"
@@ -55,23 +55,25 @@
             name="stock"
             value="{{ old('stock', $product->stock ?? 0) }}"
             required
-            style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 8px;"
+            class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100"
         >
         @error('stock')
-            <small style="color: #b91c1c;">{{ $message }}</small>
+            <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p>
         @enderror
     </div>
 </div>
 
-<button
-    type="submit"
-    style="background: #111827; color: #fff; padding: 10px 16px; border: 0; border-radius: 8px; cursor: pointer;"
->
-    Simpan
-</button>
-<a
-    href="{{ route('products.index') }}"
-    style="margin-left: 8px; color: #374151; text-decoration: none;"
->
-    Batal
-</a>
+<div class="flex items-center gap-3 pt-2">
+    <button
+        type="submit"
+        class="inline-flex cursor-pointer items-center rounded-lg bg-cyan-600 px-4 py-2 text-sm font-semibold text-white transition hover:bg-cyan-700"
+    >
+        Simpan
+    </button>
+    <a
+        href="{{ route('products.index') }}"
+        class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700"
+    >
+        Batal
+    </a>
+</div>
