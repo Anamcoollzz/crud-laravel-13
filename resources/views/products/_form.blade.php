@@ -1,6 +1,22 @@
 @csrf
 
 <div>
+  <label for="category_id" class="mb-2 block text-sm font-semibold text-slate-700">Kategori</label>
+  <select id="category_id" name="category_id"
+    class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">
+    <option value="">Tanpa Kategori</option>
+    @foreach ($categories as $categoryOption)
+      <option value="{{ $categoryOption->id }}" @selected((string) old('category_id', $product->category_id ?? '') === (string) $categoryOption->id)>
+        {{ $categoryOption->name }}
+      </option>
+    @endforeach
+  </select>
+  @error('category_id')
+    <p class="mt-1 text-xs font-medium text-rose-600">{{ $message }}</p>
+  @enderror
+</div>
+
+<div>
   <label for="name" class="mb-2 block text-sm font-semibold text-slate-700">Nama Produk</label>
   <input type="text" id="name" name="name" value="{{ old('name', $product->name ?? '') }}" required
     class="w-full rounded-lg border border-slate-300 px-3 py-2 text-sm outline-none transition focus:border-cyan-500 focus:ring-2 focus:ring-cyan-100">

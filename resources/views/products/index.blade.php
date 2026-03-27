@@ -23,6 +23,7 @@
         <thead>
           <tr>
             <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Nama</th>
+            <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Kategori</th>
             <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Harga</th>
             <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Stok</th>
             <th class="border-b border-slate-200 bg-slate-50 px-4 py-3 text-left font-semibold text-slate-700">Aksi</th>
@@ -32,6 +33,7 @@
           @forelse ($products as $product)
             <tr class="hover:bg-slate-50/70">
               <td class="border-b border-slate-100 px-4 py-3 font-medium text-slate-900">{{ $product->name }}</td>
+              <td class="border-b border-slate-100 px-4 py-3 text-slate-600">{{ $product->category?->name ?: '-' }}</td>
               <td class="border-b border-slate-100 px-4 py-3">Rp {{ number_format($product->price, 2, ',', '.') }}</td>
               <td class="border-b border-slate-100 px-4 py-3">{{ $product->stock }}</td>
               <td class="border-b border-slate-100 px-4 py-3">
@@ -48,7 +50,7 @@
             </tr>
           @empty
             <tr>
-              <td colspan="4" class="px-4 py-8 text-center text-slate-500">Belum ada data produk.</td>
+              <td colspan="5" class="px-4 py-8 text-center text-slate-500">Belum ada data produk.</td>
             </tr>
           @endforelse
         </tbody>

@@ -7,6 +7,11 @@
   <div class="mx-auto max-w-3xl rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="grid gap-4 sm:grid-cols-2">
       <div class="rounded-xl bg-slate-50 p-4">
+        <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Kategori</p>
+        <p class="mt-1 text-sm font-semibold text-slate-900">{{ $product->category?->name ?: '-' }}</p>
+      </div>
+
+      <div class="rounded-xl bg-slate-50 p-4">
         <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">Nama</p>
         <p class="mt-1 text-sm font-semibold text-slate-900">{{ $product->name }}</p>
       </div>
