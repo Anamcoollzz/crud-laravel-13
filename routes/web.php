@@ -27,6 +27,7 @@ Route::resource('categories', CategoryController::class);
 Route::prefix('pos')->name('pos.')->group(function () {
     Route::get('/', [PosController::class, 'index'])->name('index');
     Route::get('/transactions', [PosTransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/chart', [PosTransactionController::class, 'chart'])->name('transactions.chart');
     Route::get('/transactions/{order}', [PosTransactionController::class, 'show'])->name('transactions.show');
     Route::get('/transactions/{order}/receipt', [PosTransactionController::class, 'receipt'])->name('transactions.receipt');
     Route::post('/add', [PosController::class, 'add'])->name('add');

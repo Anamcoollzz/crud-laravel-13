@@ -7,9 +7,14 @@
   <div class="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm">
     <div class="mb-5 flex items-center justify-between">
       <h3 class="text-lg font-semibold text-slate-900">Daftar Transaksi</h3>
-      <a href="{{ route('pos.index') }}" class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700">
-        Kembali ke POS
-      </a>
+      <div class="flex items-center gap-2">
+        <a href="{{ route('pos.transactions.chart') }}" class="inline-flex items-center rounded-lg bg-slate-900 px-4 py-2 text-sm font-semibold text-white transition hover:bg-slate-800">
+          Lihat Chart
+        </a>
+        <a href="{{ route('pos.index') }}" class="inline-flex items-center rounded-lg border border-slate-300 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-cyan-400 hover:text-cyan-700">
+          Kembali ke POS
+        </a>
+      </div>
     </div>
 
     <div class="overflow-x-auto">
