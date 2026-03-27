@@ -80,7 +80,7 @@
 
 @push('scripts')
   <script>
-    (function () {
+    (function() {
       const page = document.getElementById('pos-page');
 
       if (!page) {
