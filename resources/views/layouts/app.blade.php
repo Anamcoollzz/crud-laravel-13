@@ -30,8 +30,12 @@
           Modul Kategori
         </a>
         <a href="{{ route('pos.index') }}"
-          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('pos.*') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('pos.index') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
           Modul POS
+        </a>
+        <a href="{{ route('pos.transactions.index') }}"
+          class="flex items-center rounded-lg px-4 py-3 text-sm font-semibold transition {{ request()->routeIs('pos.transactions.*') ? 'bg-cyan-500/20 text-cyan-200' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
+          History Transaksi
         </a>
       </nav>
     </aside>

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\PosTransactionController;
 use App\Http\Controllers\ProductController;
 use App\Models\Category;
 use App\Models\Product;
@@ -25,6 +26,8 @@ Route::resource('categories', CategoryController::class);
 
 Route::prefix('pos')->name('pos.')->group(function () {
     Route::get('/', [PosController::class, 'index'])->name('index');
+    Route::get('/transactions', [PosTransactionController::class, 'index'])->name('transactions.index');
+    Route::get('/transactions/{order}', [PosTransactionController::class, 'show'])->name('transactions.show');
     Route::post('/add', [PosController::class, 'add'])->name('add');
     Route::patch('/update/{product}', [PosController::class, 'update'])->name('update');
     Route::delete('/remove/{product}', [PosController::class, 'remove'])->name('remove');
