@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\PosOrder;
 use App\Models\Product;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
@@ -108,12 +109,17 @@ class PosController extends Controller
             return back()->with('error', 'Keranjang masih kosong.');
         }
 
+        $invoiceNo = null;
+
         try {
-            DB::transaction(function () use ($cart) {
+            DB::transaction(function () use ($cart, &$invoiceNo) {
                 $products = Product::whereIn('id', array_keys($cart))
                     ->lockForUpdate()
                     ->get()
                     ->keyBy('id');
+
+                $totalItems = 0;
+                $totalAmount = 0;
 
                 foreach ($cart as $productId => $qty) {
                     $product = $products->get((int) $productId);
@@ -122,10 +128,30 @@ class PosController extends Controller
                     if (!$product || $product->stock < $qty) {
                         throw new \RuntimeException("Stok {$productName} tidak mencukupi.");
                     }
+
+                    $totalItems += $qty;
+                    $totalAmount += $product->price * $qty;
                 }
+
+                $order = PosOrder::create([
+                    'invoice_no' => 'POS-' . now()->format('YmdHis') . '-' . random_int(100, 999),
+                    'total_items' => $totalItems,
+                    'total_amount' => $totalAmount,
+                ]);
+
+                $invoiceNo = $order->invoice_no;
 
                 foreach ($cart as $productId => $qty) {
                     $product = $products->get((int) $productId);
+
+                    $order->items()->create([
+                        'product_id' => $product->id,
+                        'product_name' => $product->name,
+                        'price' => $product->price,
+                        'qty' => $qty,
+                        'subtotal' => $product->price * $qty,
+                    ]);
+
                     $product->decrement('stock', $qty);
                 }
             });
@@ -139,11 +165,13 @@ class PosController extends Controller
 
         session()->forget('pos_cart');
 
+        $successMessage = 'Checkout berhasil. Transaksi tersimpan dengan nomor ' . $invoiceNo . '.';
+
         if ($this->isAjax($request)) {
-            return $this->jsonResponse('success', 'Checkout berhasil, stok produk telah diperbarui.');
+            return $this->jsonResponse('success', $successMessage);
         }
 
-        return redirect()->route('pos.index')->with('success', 'Checkout berhasil, stok produk telah diperbarui.');
+        return redirect()->route('pos.index')->with('success', $successMessage);
     }
 
     private function isAjax(Request $request): bool
