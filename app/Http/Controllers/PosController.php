@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -27,7 +28,7 @@ class PosController extends Controller
         return view('pos.index', compact('products', 'cartItems', 'total', 'search'));
     }
 
-    public function add(Request $request): RedirectResponse
+    public function add(Request $request): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'product_id' => ['required', 'exists:products,id'],
@@ -40,22 +41,34 @@ class PosController extends Controller
         $newQty = $currentQty + (int) $validated['qty'];
 
         if ($newQty > $product->stock) {
+            if ($this->isAjax($request)) {
+                return $this->jsonResponse('error', "Stok {$product->name} tidak mencukupi.", 422);
+            }
+
             return back()->with('error', "Stok {$product->name} tidak mencukupi.");
         }
 
         $cart[$product->id] = $newQty;
         session(['pos_cart' => $cart]);
 
+        if ($this->isAjax($request)) {
+            return $this->jsonResponse('success', "{$product->name} ditambahkan ke keranjang.");
+        }
+
         return back()->with('success', "{$product->name} ditambahkan ke keranjang.");
     }
 
-    public function update(Request $request, Product $product): RedirectResponse
+    public function update(Request $request, Product $product): RedirectResponse|JsonResponse
     {
         $validated = $request->validate([
             'qty' => ['required', 'integer', 'min:1'],
         ]);
 
         if ((int) $validated['qty'] > $product->stock) {
+            if ($this->isAjax($request)) {
+                return $this->jsonResponse('error', "Stok {$product->name} tidak mencukupi.", 422);
+            }
+
             return back()->with('error', "Stok {$product->name} tidak mencukupi.");
         }
 
@@ -63,23 +76,35 @@ class PosController extends Controller
         $cart[$product->id] = (int) $validated['qty'];
         session(['pos_cart' => $cart]);
 
+        if ($this->isAjax($request)) {
+            return $this->jsonResponse('success', 'Qty keranjang diperbarui.');
+        }
+
         return back()->with('success', 'Qty keranjang diperbarui.');
     }
 
-    public function remove(Product $product): RedirectResponse
+    public function remove(Request $request, Product $product): RedirectResponse|JsonResponse
     {
         $cart = session('pos_cart', []);
         unset($cart[$product->id]);
         session(['pos_cart' => $cart]);
 
+        if ($this->isAjax($request)) {
+            return $this->jsonResponse('success', "{$product->name} dihapus dari keranjang.");
+        }
+
         return back()->with('success', "{$product->name} dihapus dari keranjang.");
     }
 
-    public function checkout(): RedirectResponse
+    public function checkout(Request $request): RedirectResponse|JsonResponse
     {
         $cart = session('pos_cart', []);
 
         if (empty($cart)) {
+            if ($this->isAjax($request)) {
+                return $this->jsonResponse('error', 'Keranjang masih kosong.', 422);
+            }
+
             return back()->with('error', 'Keranjang masih kosong.');
         }
 
@@ -105,12 +130,36 @@ class PosController extends Controller
                 }
             });
         } catch (\RuntimeException $e) {
+            if ($this->isAjax($request)) {
+                return $this->jsonResponse('error', $e->getMessage(), 422);
+            }
+
             return back()->with('error', $e->getMessage());
         }
 
         session()->forget('pos_cart');
 
+        if ($this->isAjax($request)) {
+            return $this->jsonResponse('success', 'Checkout berhasil, stok produk telah diperbarui.');
+        }
+
         return redirect()->route('pos.index')->with('success', 'Checkout berhasil, stok produk telah diperbarui.');
+    }
+
+    private function isAjax(Request $request): bool
+    {
+        return $request->expectsJson() || $request->ajax();
+    }
+
+    private function jsonResponse(string $type, string $message, int $status = 200): JsonResponse
+    {
+        [$cartItems, $total] = $this->buildCartItems();
+
+        return response()->json([
+            'status' => $type,
+            'message' => $message,
+            'cart_html' => view('pos._cart', compact('cartItems', 'total'))->render(),
+        ], $status);
     }
 
     /**
